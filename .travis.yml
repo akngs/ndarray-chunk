@@ -7,3 +7,7 @@ script: "gulp coverage"
 after_success:
   - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info
+addons:
+  code_climate:
+    repo_token: 747f88580897524bb0ca3cd9052dd9bd343c90e85e318f7b285f7212018ada49
+
