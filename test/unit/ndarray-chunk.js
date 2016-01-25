@@ -54,5 +54,7 @@ describe('Parameter checking', () => {
   it('should check rank', () => {
     let array = pack([[1, 2], [3, 4]]);
     expect(() => chunk(array, [2])).to.throw(/Shape mismatch/);
+
+    expect(() => chunk([[[1]]], [1, 1, 1])).to.throw(/Unsupported rank/);
   });
 });
