@@ -48,7 +48,6 @@
     "isparta": "^4.0.0",
     "json-loader": "^0.5.3",
     "mocha": "^2.3.4",
-    "ndarray-pack": "^1.2.0",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0",
     "vinyl-source-stream": "^1.1.0",
@@ -61,6 +60,7 @@
   },
   "dependencies": {
     "ndarray": "^1.0.18",
+    "ndarray-pack": "^1.2.0",
     "ndarray-unpack": "^1.0.0"
   }
 }
