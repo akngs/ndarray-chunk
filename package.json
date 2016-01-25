@@ -1,6 +1,6 @@
 {
   "name": "ndarray-chunk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Splits ndarray into smaller chunks",
   "main": "dist/ndarray-chunk.js",
   "scripts": {
