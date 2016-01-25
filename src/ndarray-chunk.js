@@ -6,40 +6,40 @@ function chunk(array, shape) {
   if (array.shape.length !== shape.length) throw new Error('Shape mismatch');
 
   let rank = shape.length;
-
-  let remainders = [];
-  let nChunks = [];
-  for (let i = 0; i < rank; ++i) {
-    remainders.push(array.shape[i] % shape[i]);
-    nChunks.push(Math.floor(array.shape[i] / shape[i]) + !!remainders[i]);
-  }
-
-  let chunks = [];
-  let hiCoor = [];
-  let loCoor = [];
-  let curChunks = chunks;
-
-  // TODO: Generalize to n-dimensional chunking and remove dups
-  if (rank === 2) {
-    for (let j = 0; j < nChunks[0]; ++j) {
-      curChunks = chunks[j] = [];
-      hiCoor[0] = Math.min(j * shape[0] + shape[0], array.shape[0]);
-      loCoor[0] = j * shape[0];
-
-      for (let i = 0; i < nChunks[1]; ++i) {
-        hiCoor[1] = Math.min(i * shape[1] + shape[1], array.shape[1]);
-        loCoor[1] = i * shape[1];
-        curChunks[i] = array.hi(...hiCoor).lo(...loCoor);
+  if(rank === 1) {
+    let remainder = array.shape[0] % shape[0];
+    let nChunk = Math.floor(array.shape[0] / shape[0]) + !!remainder;
+    let chunks = new Array(nChunk);
+    for(var i = 0; i < nChunk; ++i) {
+      chunks[i] = array
+        .hi(Math.min(i * shape[0] + shape[0], array.shape[0]))
+        .lo(i * shape[0]);
+    }
+    return chunks;
+  } else if(rank === 2) {
+    let remainder0 = array.shape[0] % shape[0];
+    let remainder1 = array.shape[1] % shape[1];
+    let nChunk0 = Math.floor(array.shape[0] / shape[0]) + !!remainder0;
+    let nChunk1 = Math.floor(array.shape[1] / shape[1]) + !!remainder1;
+    let chunks = new Array(nChunk0);
+    for(var i = 0; i < nChunk0; ++i) {
+      chunks[i] = new Array(nChunk1);
+      for(var j = 0; j < nChunk1; ++j) {
+        chunks[i][j] = array
+          .hi(
+            Math.min(i * shape[0] + shape[0], array.shape[0]),
+            Math.min(j * shape[1] + shape[1], array.shape[1])
+          )
+          .lo(
+            i * shape[0],
+            j * shape[1]
+          );
       }
     }
+    return chunks;
   } else {
-    for (let i = 0; i < nChunks[0]; ++i) {
-      hiCoor[0] = Math.min(i * shape[0] + shape[0], array.shape[0]);
-      loCoor[0] = i * shape[0];
-      curChunks[i] = array.hi(...hiCoor).lo(...loCoor);
-    }
+    throw new Error('Unsupported rank');
   }
-  return chunks;
 }
 
 export {
